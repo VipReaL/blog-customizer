@@ -13,6 +13,7 @@ import {
 	fontSizeOptions,
 	defaultArticleState,
 	ArticleStateType,
+	OptionType,
 } from 'src/constants/articleProps';
 import clsx from 'clsx';
 import styles from './ArticleParamsForm.module.scss';
@@ -69,6 +70,26 @@ export const ArticleParamsForm = ({
 		}
 	}
 
+	function handleFontFamilyOption(value: OptionType) {
+		setState({ ...state, fontFamilyOption: value });
+	}
+
+	function handleFontSizeOptions(value: OptionType) {
+		setState({ ...state, fontSizeOption: value });
+	}
+
+	function handleFontColorOptions(value: OptionType) {
+		setState({ ...state, fontColor: value });
+	}
+
+	function handleBackgroundColorOptions(value: OptionType) {
+		setState({ ...state, backgroundColor: value });
+	}
+
+	function handleContentWidthOptions(value: OptionType) {
+		setState({ ...state, contentWidth: value });
+	}
+
 	return (
 		<>
 			<ArrowButton form={form} openForm={openForm} />
@@ -93,43 +114,33 @@ export const ArticleParamsForm = ({
 						selected={state.fontFamilyOption}
 						options={fontFamilyOptions}
 						title='Шрифт'
-						onChange={(selected) => {
-							setState({ ...state, fontFamilyOption: selected });
-						}}
+						onChange={handleFontFamilyOption}
 					/>
 					<RadioGroup
 						name='font-size'
 						options={fontSizeOptions}
 						selected={state.fontSizeOption}
-						onChange={(selected) => {
-							setState({ ...state, fontSizeOption: selected });
-						}}
+						onChange={handleFontSizeOptions}
 						title='рАЗМЕР шрифта'
 					/>
 					<Select
 						selected={state.fontColor}
 						options={fontColors}
 						title='Цвет шрифта'
-						onChange={(selected) => {
-							setState({ ...state, fontColor: selected });
-						}}
+						onChange={handleFontColorOptions}
 					/>
 					<Separator />
 					<Select
 						selected={state.backgroundColor}
 						options={backgroundColors}
 						title='Цвет фона'
-						onChange={(selected) => {
-							setState({ ...state, backgroundColor: selected });
-						}}
+						onChange={handleBackgroundColorOptions}
 					/>
 					<Select
 						selected={state.contentWidth}
 						options={contentWidthArr}
 						title='Ширина контента'
-						onChange={(selected) => {
-							setState({ ...state, contentWidth: selected });
-						}}
+						onChange={handleContentWidthOptions}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' type='reset' />
