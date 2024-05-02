@@ -4,7 +4,7 @@ import { Select } from 'components/select';
 import { RadioGroup } from 'components/radio-group';
 import { Separator } from '../separator';
 import { Button } from 'components/button';
-import { useState, useEffect, FormEvent } from 'react';
+import { useState, useEffect, FormEvent, useRef } from 'react';
 import {
 	fontFamilyOptions,
 	fontColors,
@@ -29,29 +29,6 @@ export const ArticleParamsForm = ({
 	const [form, setForm] = useState(false);
 	const [state, setState] = useState(defaultArticle);
 
-	function submitSidebar(event: FormEvent) {
-		event.preventDefault();
-		setDefaultArticle(state);
-
-		console.log(state); // удалить
-	}
-
-	function resetSidebar() {
-		setState(defaultArticleState);
-		setDefaultArticle(defaultArticleState);
-
-		console.log(state); // удалить, с первого раза в консоле выводяться старые данные
-	}
-
-	// открытие сайдбара/ закрытие сайдбара
-	function openForm() {
-		if (form === false) {
-			setForm(true);
-		} else if (form === true) {
-			setForm(false);
-		}
-	}
-
 	useEffect(() => {
 		function closeForm(event: KeyboardEvent) {
 			if (event.key === 'Escape') {
@@ -59,11 +36,38 @@ export const ArticleParamsForm = ({
 			}
 		}
 		document.addEventListener('keydown', closeForm);
+		document.addEventListener('mousedown', closeClickForm);
 
 		return () => {
 			document.removeEventListener('keydown', closeForm);
+			document.removeEventListener('mousedown', closeClickForm);
 		};
 	});
+
+	const ref = useRef<HTMLFormElement | null>(null);
+	function closeClickForm(event: MouseEvent) {
+		if (ref.current && !ref.current.contains(event.target as Node)) {
+			setForm(false);
+		}
+	}
+
+	function submitSidebar(event: FormEvent) {
+		event.preventDefault();
+		setDefaultArticle(state);
+	}
+
+	function resetSidebar() {
+		setState(defaultArticleState);
+		setDefaultArticle(defaultArticleState);
+	}
+
+	function openForm() {
+		if (form === false) {
+			setForm(true);
+		} else if (form === true) {
+			setForm(false);
+		}
+	}
 
 	return (
 		<>
@@ -73,7 +77,8 @@ export const ArticleParamsForm = ({
 				<form
 					className={styles.form}
 					onSubmit={submitSidebar}
-					onReset={resetSidebar}>
+					onReset={resetSidebar}
+					ref={ref}>
 					<Text
 						as='h1'
 						size={31}
@@ -90,7 +95,6 @@ export const ArticleParamsForm = ({
 						title='Шрифт'
 						onChange={(selected) => {
 							setState({ ...state, fontFamilyOption: selected });
-							console.log(selected); // удалить
 						}}
 					/>
 					<RadioGroup
@@ -99,7 +103,6 @@ export const ArticleParamsForm = ({
 						selected={state.fontSizeOption}
 						onChange={(selected) => {
 							setState({ ...state, fontSizeOption: selected });
-							console.log(selected); // удалить
 						}}
 						title='рАЗМЕР шрифта'
 					/>
@@ -109,7 +112,6 @@ export const ArticleParamsForm = ({
 						title='Цвет шрифта'
 						onChange={(selected) => {
 							setState({ ...state, fontColor: selected });
-							console.log(selected); // удалить
 						}}
 					/>
 					<Separator />
@@ -119,7 +121,6 @@ export const ArticleParamsForm = ({
 						title='Цвет фона'
 						onChange={(selected) => {
 							setState({ ...state, backgroundColor: selected });
-							console.log(selected); // удалить
 						}}
 					/>
 					<Select
@@ -128,7 +129,6 @@ export const ArticleParamsForm = ({
 						title='Ширина контента'
 						onChange={(selected) => {
 							setState({ ...state, contentWidth: selected });
-							console.log(selected); // удалить
 						}}
 					/>
 					<div className={styles.bottomContainer}>
