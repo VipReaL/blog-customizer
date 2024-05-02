@@ -92,7 +92,7 @@ export const ArticleParamsForm = ({
 
 	return (
 		<>
-			<ArrowButton form={form} openForm={openForm} />
+			<ArrowButton form={form} onClick={openForm} />
 			<aside
 				className={clsx(styles.container, { [styles.container_open]: form })}>
 				<form

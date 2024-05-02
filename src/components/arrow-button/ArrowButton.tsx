@@ -8,10 +8,10 @@ export type OnClick = () => void;
 
 export type ArrowButtonProps = {
 	form?: boolean;
-	openForm?: OnClick;
+	onClick?: OnClick;
 };
 
-export const ArrowButton = ({ form, openForm }: ArrowButtonProps) => {
+export const ArrowButton = ({ form, onClick }: ArrowButtonProps) => {
 	return (
 		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */
 		<div
@@ -19,7 +19,7 @@ export const ArrowButton = ({ form, openForm }: ArrowButtonProps) => {
 			aria-label='Открыть/Закрыть форму параметров статьи'
 			tabIndex={0}
 			className={clsx(styles.container, { [styles.container_open]: form })}
-			onClick={openForm}>
+			onClick={onClick}>
 			<img
 				src={arrow}
 				alt='иконка стрелочки'
